@@ -4,15 +4,17 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY ["BlogAgent/BlogAgent.csproj", "BlogAgent/"]
-COPY ["BlogAgent.Domain/BlogAgent.Domain.csproj", "BlogAgent.Domain/"]
-RUN dotnet restore "BlogAgent/BlogAgent.csproj"--recursive
+
+# Copy everything first to ensure references are preserved
 COPY . .
+RUN dotnet restore "BlogAgent/BlogAgent.csproj"
+
 WORKDIR "/src/BlogAgent"
-RUN dotnet build "BlogAgent.csproj" -c Release -o /app/build
+# We add --no-restore because we already did it above
+RUN dotnet build "BlogAgent.csproj" -c Release -o /app/build --no-restore
 
 FROM build AS publish
-RUN dotnet publish "BlogAgent.csproj" -c Release -o /app/publish
+RUN dotnet publish "BlogAgent.csproj" -c Release -o /app/publish --no-restore
 
 FROM base AS final
 WORKDIR /app
