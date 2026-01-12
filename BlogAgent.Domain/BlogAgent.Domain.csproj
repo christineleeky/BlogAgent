@@ -15,7 +15,7 @@
     <!-- Agent Framework 相关包 -->
     <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.0.0-preview.260108.1" />
     <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.0.0-preview.260108.1" />
-    <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.10.1-preview.1.25521.4" />
+    <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="10.1.1-preview.1.25612.2" />
     
     <!-- MCP (Model Context Protocol) 支持 -->
     <PackageReference Include="ModelContextProtocol" Version="0.4.0-preview.3" />
