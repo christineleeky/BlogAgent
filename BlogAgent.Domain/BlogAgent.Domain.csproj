@@ -13,8 +13,8 @@
     <PackageReference Include="AutoMapper" Version="8.1.0" />
     
     <!-- Agent Framework 相关包 -->
-    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.0.0-preview.260108.1" />
-    <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.0.0-preview.260108.1" />
+    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="9.10.1-preview.1.25521.4" />
+    <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="9.10.1-preview.1.25521.4" />
     <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.10.1-preview.1.25521.4" />
     
     <!-- MCP (Model Context Protocol) 支持 -->
