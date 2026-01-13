@@ -4,10 +4,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
+
+COPY ["BlogAgent.sln", "./"]
+
 COPY ["BlogAgent/BlogAgent.csproj", "BlogAgent/"]
 COPY ["BlogAgent.Domain/BlogAgent.Domain.csproj", "BlogAgent.Domain/"]
-RUN dotnet restore "BlogAgent/BlogAgent.csproj"
+
+RUN dotnet restore "BlogAgent.sln"
+
 COPY . .
+
 WORKDIR "/src/BlogAgent"
 RUN dotnet build "BlogAgent.csproj" -c Release -o /app/build
 
