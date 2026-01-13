@@ -16,6 +16,8 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="Markdig" Version="0.37.0" />
+    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="0.1.0-preview.24112101" />
+    <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="0.1.0-preview.24112101"/>
     <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.10.1-preview.1.25521.4"/>
   </ItemGroup>
 
