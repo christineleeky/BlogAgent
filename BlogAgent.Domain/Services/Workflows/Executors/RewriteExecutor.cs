@@ -63,13 +63,11 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 // 从 Shared State 获取研究内容和任务信息
                 var researchResult = await context.ReadStateAsync<ResearchResultOutput>(
                     BlogStateConstants.ResearchResultKey,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken) ?? throw new InvalidOperationException("研究结果不存在");
+                    BlogStateConstants.BlogStateScope) ?? throw new InvalidOperationException("研究结果不存在");
 
                 var taskInfo = await context.ReadStateAsync<BlogTaskInput>(
                     BlogStateConstants.TaskInfoKey,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken) ?? throw new InvalidOperationException("任务信息不存在");
+                    BlogStateConstants.BlogStateScope) ?? throw new InvalidOperationException("任务信息不存在");
 
                 // 构建改进建议
                 var improvementSuggestions = string.Join("\n",
@@ -130,8 +128,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 await context.QueueStateUpdateAsync(
                     BlogStateConstants.DraftContentKey,
                     output,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 _logger.LogInformation(
                     $"[RewriteExecutor] 博客重写完成, TaskId: {taskId}, 重写次数: {rewriteCount}, 新标题: {output.Title}");
