@@ -29,8 +29,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
 
         public override async ValueTask<DraftContentOutput> HandleAsync(
             ReviewResultOutput reviewResult,
-            IWorkflowContext context,
-            CancellationToken cancellationToken = default)
+            IWorkflowContext context)
         {
             var taskId = reviewResult.TaskId;
             _logger.LogInformation($"[RewriteExecutor] 开始重写博客, TaskId: {taskId}, 上次评分: {reviewResult.OverallScore}");
@@ -38,8 +37,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
             // 获取并增加重写次数
             var rewriteCount = await context.ReadStateAsync<int>(
                 BlogStateConstants.RewriteCountKey,
-                BlogStateConstants.BlogStateScope,
-                cancellationToken);
+                BlogStateConstants.BlogStateScope);
             rewriteCount++;
 
             if (rewriteCount > BlogStateConstants.MaxRewriteCount)
@@ -52,8 +50,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
             await context.QueueStateUpdateAsync(
                 BlogStateConstants.RewriteCountKey,
                 rewriteCount,
-                BlogStateConstants.BlogStateScope,
-                cancellationToken);
+                BlogStateConstants.BlogStateScope);
 
             // 更新任务状态
             await _blogService.UpdateTaskStatusAsync(
