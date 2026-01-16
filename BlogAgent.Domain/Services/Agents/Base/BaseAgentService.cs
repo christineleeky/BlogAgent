@@ -114,7 +114,7 @@ namespace BlogAgent.Domain.Services.Agents.Base
                     })
                     .GetChatClient(OpenAIOption.ChatModel);
 
-                _agent = chatClient.CreateAIAgent(options);
+                var _agent = chatClient.CreateAIAgent(options);
             }
 
             return _agent;
