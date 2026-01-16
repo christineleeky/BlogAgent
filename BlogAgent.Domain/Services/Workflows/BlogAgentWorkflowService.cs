@@ -83,7 +83,6 @@ namespace BlogAgent.Domain.Services.Workflows
 
             // 使用 AgentWorkflowBuilder 构建顺序执行的工作流
             var workflow = AgentWorkflowBuilder.BuildSequential(
-                "BlogGenerationWorkflow",
                 researcherAgent,
                 writerAgent,
                 reviewerAgent
@@ -152,7 +151,7 @@ namespace BlogAgent.Domain.Services.Workflows
                 var workflow = await BuildBlogWorkflowAsync().ConfigureAwait(false);
                 var messages = new List<ChatMessage> { new ChatMessage(ChatRole.User, input) };
                 
-                await using var run = await InProcessExecution.StreamAsync(workflow, messages);
+                var run = await InProcessExecution.StreamAsync(workflow, messages);
                 
                 // 发送 TurnToken 触发 Agent 执行
                 await run.TrySendMessageAsync(new TurnToken(emitEvents: true));

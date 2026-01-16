@@ -188,7 +188,7 @@ namespace BlogAgent.Domain.Services.Workflows
                 await _blogService.UpdateTaskStatusAsync(taskId, Domain.Enum.AgentTaskStatus.Researching, "workflow_v2_running");
 
                 // 执行工作流
-                await using var run = await InProcessExecution.StreamAsync(workflow, input);
+                var run = await InProcessExecution.StreamAsync(workflow, input);
 
                 int currentStep = 0;
                 string lastExecutorId = string.Empty;
