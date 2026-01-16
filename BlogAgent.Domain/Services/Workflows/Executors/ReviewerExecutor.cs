@@ -27,7 +27,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
             _logger = _logger;
         }
 
-        public override async Task<ReviewResultOutput> HandleAsync(
+        public override async ValueTask<ReviewResultOutput> HandleAsync(
             DraftContentOutput input,
             IWorkflowContext context)
         {
