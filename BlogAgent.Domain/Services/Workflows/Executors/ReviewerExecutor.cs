@@ -28,11 +28,10 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
         }
 
         public override async ValueTask<ReviewResultOutput> HandleAsync(
-            DraftContentOutput draftContent,
-            IWorkflowContext context,
-            CancellationToken cancellationToken = default)
+            DraftContentOutput input,
+            IWorkflowContext context)
         {
-            var taskId = draftContent.TaskId;
+            var taskId = input.TaskId;
             _logger.LogInformation($"[ReviewerExecutor] 开始质量审查, TaskId: {taskId}");
 
             // 更新任务状态
@@ -45,8 +44,8 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
             {
                 // 调用 ReviewerAgent 进行质量审查
                 var reviewResult = await _agent.ReviewAsync(
-                    draftContent.Title,
-                    draftContent.Content,
+                    input.Title,
+                    input.Content,
                     taskId);
 
                 // 构建输出 - 使用正确的 ReviewResultDto 结构
@@ -90,8 +89,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 await context.QueueStateUpdateAsync(
                     BlogStateConstants.ReviewResultKey,
                     output,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 _logger.LogInformation(
                     $"[ReviewerExecutor] 质量审查完成, TaskId: {taskId}, 评分: {output.OverallScore}, 是否通过: {output.IsPassed}");
