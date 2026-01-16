@@ -29,8 +29,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
 
         public override async ValueTask<ResearchResultOutput> HandleAsync(
             BlogTaskInput input,
-            IWorkflowContext context,
-            CancellationToken cancellationToken = default)
+            IWorkflowContext context)
         {
             _logger.LogInformation($"[ResearcherExecutor] 开始执行资料收集, TaskId: {input.TaskId}");
 
@@ -46,8 +45,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 await context.QueueStateUpdateAsync(
                     BlogStateConstants.TaskInfoKey,
                     input,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 // 调用 ResearcherAgent 进行资料收集
                 var result = await _agent.ResearchAsync(
@@ -76,15 +74,13 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 await context.QueueStateUpdateAsync(
                     BlogStateConstants.ResearchResultKey,
                     output,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 // 初始化重写次数
                 await context.QueueStateUpdateAsync(
                     BlogStateConstants.RewriteCountKey,
                     0,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 _logger.LogInformation($"[ResearcherExecutor] 资料收集完成, TaskId: {input.TaskId}");
 

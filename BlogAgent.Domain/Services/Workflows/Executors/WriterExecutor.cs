@@ -29,8 +29,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
 
         public override async ValueTask<DraftContentOutput> HandleAsync(
             ResearchResultOutput researchResult,
-            IWorkflowContext context,
-            CancellationToken cancellationToken = default)
+            IWorkflowContext context)
         {
             var taskId = researchResult.TaskId;
             _logger.LogInformation($"[WriterExecutor] 开始撰写博客, TaskId: {taskId}");
@@ -46,8 +45,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 // 从 Shared State 获取任务信息
                 var taskInfo = await context.ReadStateAsync<BlogTaskInput>(
                     BlogStateConstants.TaskInfoKey,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 if (taskInfo == null)
                 {
@@ -90,8 +88,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 await context.QueueStateUpdateAsync(
                     BlogStateConstants.DraftContentKey,
                     output,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 _logger.LogInformation($"[WriterExecutor] 博客撰写完成, TaskId: {taskId}, 标题: {output.Title}");
 

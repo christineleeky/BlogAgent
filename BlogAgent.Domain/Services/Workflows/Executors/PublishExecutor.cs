@@ -24,8 +24,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
 
         public override async ValueTask<string> HandleAsync(
             ReviewResultOutput reviewResult,
-            IWorkflowContext context,
-            CancellationToken cancellationToken = default)
+            IWorkflowContext context)
         {
             var taskId = reviewResult.TaskId;
             _logger.LogInformation($"[PublishExecutor] 开始发布博客, TaskId: {taskId}, 评分: {reviewResult.OverallScore}");
@@ -35,8 +34,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
                 // 获取草稿内容
                 var draftContent = await context.ReadStateAsync<DraftContentOutput>(
                     BlogStateConstants.DraftContentKey,
-                    BlogStateConstants.BlogStateScope,
-                    cancellationToken);
+                    BlogStateConstants.BlogStateScope);
 
                 if (draftContent == null)
                 {

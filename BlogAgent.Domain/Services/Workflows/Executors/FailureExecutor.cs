@@ -23,8 +23,7 @@ namespace BlogAgent.Domain.Services.Workflows.Executors
 
         public override async ValueTask<string> HandleAsync(
             ReviewResultOutput reviewResult,
-            IWorkflowContext context,
-            CancellationToken cancellationToken = default)
+            IWorkflowContext context)
         {
             var taskId = reviewResult.TaskId;
             _logger.LogWarning($"[FailureExecutor] 处理发布失败, TaskId: {taskId}, 最终评分: {reviewResult.OverallScore}");
