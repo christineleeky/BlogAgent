@@ -7,6 +7,12 @@ using Serilog;
 using SqlSugar;
 using Log = Serilog.Log;
 
+using Microsoft.Agents.AI;
+using Microsoft.Agents.AI.Hosting;
+using Microsoft.Agents.AI.Workflows;
+using BlogAgent.Domain.Services.Agents; // Make sure these match your project
+using BlogAgent.Domain.Services.Workflows.Executors;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -75,7 +81,15 @@ Log.Logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);
 
+// 1. Enable the AI Workflow engine
+builder.Services.AddWorkflow(); 
 
+// 2. Enable State Management (Required for data collection)
+builder.Services.AddSingleton<IStateProvider, MemoryStateProvider>();
+
+// 3. Register your Agent and Executor
+builder.Services.AddTransient<ResearcherAgent>();
+builder.Services.AddTransient<ResearcherExecutor>();
 
 var app = builder.Build();
 
