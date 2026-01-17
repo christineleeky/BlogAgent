@@ -81,14 +81,15 @@ Log.Logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);
 
-// 1. Enable the AI Workflow engine
+// 1. New way to add Workflow in 1.0.0
 builder.Services.AddWorkflow();
-builder.Services.AddWorkflowActivity<BlogTaskInput, ResearcherExecutor>();
 
-// 2. Enable State Management (Required for data collection)
+// 2. The State Provider name might have changed to InProcess or Memory
 builder.Services.AddSingleton<IStateProvider, MemoryStateProvider>();
 
-// 3. Register your Agent and Executor
+builder.Services.AddWorkflowActivity<BlogAgent.Domain.Services.Workflows.Messages.BlogTaskInput, ResearcherExecutor>();
+
+// 3. Keep these basic registrations
 builder.Services.AddTransient<ResearcherAgent>();
 builder.Services.AddTransient<ResearcherExecutor>();
 
