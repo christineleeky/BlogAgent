@@ -36,17 +36,7 @@ builder.Services.AddSwaggerGen();
 
 // 配置数据库连接选项
 builder.Configuration.GetSection("DBConnection").Get<DBConnectionOption>();
-
-// 读取 OpenAI 配置并填充静态选项（项目中使用静态属性）
-var openAiSection = builder.Configuration.GetSection("OpenAI");
-var openAiOptions = openAiSection.Get<OpenAIOption>();
-if (openAiOptions != null)
-{
-    OpenAIOption.EndPoint = openAiOptions.EndPoint ?? string.Empty;
-    OpenAIOption.Key = openAiOptions.Key ?? string.Empty;
-    OpenAIOption.ChatModel = openAiOptions.ChatModel ?? string.Empty;
-    OpenAIOption.EmbeddingModel = openAiOptions.EmbeddingModel ?? string.Empty;
-}
+builder.Configuration.GetSection("OpenAI").Get<OpenAIOption>();
 
 // 注册 SqlSugar
 builder.Services.AddScoped<ISqlSugarClient>(sp => SqlSugarHelper.SqlScope());
