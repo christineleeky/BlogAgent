@@ -82,7 +82,8 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);
 
 // 1. Enable the AI Workflow engine
-builder.Services.AddWorkflow(); 
+builder.Services.AddWorkflow();
+builder.Services.AddWorkflowActivity<BlogTaskInput, ResearcherExecutor>();
 
 // 2. Enable State Management (Required for data collection)
 builder.Services.AddSingleton<IStateProvider, MemoryStateProvider>();

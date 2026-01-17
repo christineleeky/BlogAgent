@@ -6,6 +6,8 @@ using BlogAgent.Domain.Domain.Model;
 using BlogAgent.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 
+using Microsoft.Agents.AI.Workflows;
+
 namespace BlogAgent.Domain.Services
 {
     /// <summary>
@@ -18,22 +20,42 @@ namespace BlogAgent.Domain.Services
         private readonly BlogContentRepository _contentRepository;
         private readonly ReviewResultRepository _reviewResultRepository;
         private readonly ILogger<BlogService> _logger;
+        private readonly IWorkflow _workflow;
 
         public BlogService(
             BlogTaskRepository taskRepository,
             BlogContentRepository contentRepository,
             ReviewResultRepository reviewResultRepository,
+            IWorkflow workflow,
             ILogger<BlogService> logger)
         {
             _taskRepository = taskRepository;
             _contentRepository = contentRepository;
             _reviewResultRepository = reviewResultRepository;
+            _workflow = workflow;
             _logger = logger;
         }
 
         /// <summary>
         /// 创建博客任务
         /// </summary>
+        
+        public async Task ExecuteWorkflowAsync(int taskId){
+        var task = await GetTaskAsync(taskId);
+        if (task == null) return;
+        
+        // Create the input for the ResearcherExecutor
+        var input = new BlogTaskInput 
+    { 
+        TaskId = task.Id, 
+        Topic = task.Topic,
+        ReferenceContent = task.ReferenceContent 
+    };
+
+    // This starts the "Data Collection" step
+    // The second parameter 'task.Id.ToString()' is the mandatory State Key
+    await _workflow.RunAsync(input, task.Id.ToString()); 
+}
         public async Task<int> CreateTaskAsync(CreateBlogRequest request)
         {
             var task = new BlogTask
