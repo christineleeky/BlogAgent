@@ -113,8 +113,7 @@ namespace BlogAgent.Domain.Services.Agents.Base
                         Endpoint = new Uri(endpoint)
                     })
                     .GetChatClient(OpenAIOption.ChatModel);
-
-                var _agent = chatClient.CreateAIAgent(options);
+                _agent = chatClient.CreateAIAgent(options);
             }
 
             return _agent;
